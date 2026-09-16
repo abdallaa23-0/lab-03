@@ -25,7 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.foundation.layout.fillMaxSize
-
+import androidx.compose.foundation.clickable
 @Composable
 fun CityListScreen(
     cities: List<City>,
@@ -33,8 +33,11 @@ fun CityListScreen(
     modifier: Modifier = Modifier
 ) {
     var newCityName by remember { mutableStateOf("") }
-    var newProvinceName by remember { mutableStateOf("") }
+    var newProvinceName by remember { mutableStateOf("") } 
     var showAddCityFields by remember { mutableStateOf(false) }
+    var selectedCity by remember { mutableStateOf<City?>(null) } 
+    var editCity by remember { mutableStateOf("") } 
+    var editProvince by remember { mutableStateOf("") } 
     Column(modifier = modifier) {
         Row(
             modifier = Modifier.fillMaxWidth(),
