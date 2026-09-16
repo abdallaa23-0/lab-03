@@ -75,11 +75,11 @@ fun CityListScreen(
                 Button(
                     modifier = Modifier.padding(vertical = 12.dp),
                     onClick = {
-                        if (newCityName.isNotBlank() && newProvinceName.isNotBlank()) {
-                            onAddCity(
+                        if (editCity.isNotBlank() && editProvince.isNotBlank()) {
+                            onUpdateCity(
                                 City(
-                                    name = newCityName,
-                                    province = newProvinceName
+                                    name = editCity,
+                                    province = editProvince
                                 )
                             )
                             newCityName = ""
@@ -96,7 +96,13 @@ fun CityListScreen(
         }
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             itemsIndexed(cities) { index, city ->
-                CityRow(city = city)
+                CityRow(city = city, 
+                    onClick{
+                    selectedCity = city
+                    editCity = city.name
+                    editProvince = city.province
+                    }
+                )
                 if (index < cities.lastIndex) {
                     HorizontalDivider()
                 }
@@ -141,7 +147,8 @@ fun CityListScreenPreview() {
                 City("Calgary", "AB")
             ),
 
-                    onAddCity = {}
+                    onAddCity = {},
+                    onUpdateCity = {}
         )
     }
 }
