@@ -26,20 +26,64 @@ import androidx.compose.runtime.setValue
 @Composable
 fun CityListScreen(
     cities: List<City>,
+    onAddCity: (City)-> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier) {
-        itemsIndexed(cities) { index, city ->
-            CityRow(city = city)
+    var newCityName by remember { mutableStateOf("") }
+    var newProvinceName by remember { mutableStateOf("") }
 
-            if (index < cities.lastIndex) {
-                HorizontalDivider()
+    Column(modifier = modifier) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            OutlinedTextField(
+                value = newCityName,
+                onValueChange = { newCityName = it },
+                label = { Text("City") },
+                modifier = Modifier.weight(1f)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            OutlinedTextField(
+                value = newProvinceName,
+                onValueChange = { newProvinceName = it },
+                label = { Text("Province") },
+                modifier = Modifier.weight(1f)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Button(
+                modifier = Modifier.padding(vertical = 12.dp),
+                onClick = {
+                    if (newCityName.isNotBlank() && newProvinceName.isNotBlank()) {
+                        onAddCity(
+                            City(
+                                name = newCityName,
+                                province = newProvinceName
+                            )
+                        )
+                        newCityName = ""
+                        newProvinceName = ""
+                    }
+                }
+            ) {
+                Text("Add City")
+            }
+
+
+        }
+        LazyColumn {
+            itemsIndexed(cities) { index, city ->
+                CityRow(city = city)
+                if (index < cities.lastIndex) {
+                    HorizontalDivider()
+                }
             }
         }
     }
-}
 
-@Composable
+}
+    @Composable
 fun CityRow(city: City) {
     Row(
         modifier = Modifier
@@ -69,7 +113,9 @@ fun CityListScreenPreview() {
                 City("Edmonton", "AB"),
                 City("Vancouver", "BC"),
                 City("Calgary", "AB")
-            )
+            ),
+
+                    onAddCity = {}
         )
     }
 }
